@@ -36,12 +36,12 @@ def find_by_ingredient(ingredient):
 
 def find_by_strength_and_color(min_strength, color):
     """Поиск по крепости и цвету."""
-    print(f"\n🔍 Пиво с крепостью >= {min_strength} и цветом '{color}'")
+    print(f"\n🔍 Пиво с крепостью {min_strength} и цветом '{color}'")
     result = []
     for n, d in beer_knowledge_base.items():
         if n == "Пиво":
             continue
-        if d["крепость"] >= min_strength and color.lower() in d["цвет"].lower():
+        if d["крепость"] == min_strength and color.lower() in d["цвет"].lower():
             result.append(n)
     if result:
         print("Подходит:", ", ".join(result))
@@ -69,11 +69,12 @@ def main():
             find_by_ingredient(input("Введите ингредиент: "))
         elif choice == "4":
             find_by_strength_and_color(
-                float(input("Минимальная крепость (%): ")),
+                input("Минимальная крепость слабая/средняя/сильная: "),
                 input("Цвет (светлый/тёмный/золотистый/янтарный): ")
             )
         elif choice == "0":
             print("Выход из системы. 🍻")
+
             break
         else:
             print("Неверный выбор!")
