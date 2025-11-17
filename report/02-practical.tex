@@ -3,27 +3,74 @@
 \section{Модель базы знаний}
 База знаний реализована с использованием фреймовой модели: каждый сорт пива представлен как фрейм с набором атрибутов (слотов).  
 
-\subsection{Пример фрейма}
+\includelistingpretty
+    {frame.py} % Имя файла с расширением (файл должен быть расположен в директории inc/lst/)
+    {} % Язык программирования (необязательный аргумент)
+    {Пример объекта в базе данных} % Подпись листинга
 
-\begin{verbatim}
-Фрейм: IPA
-  Горечь: высокая
-  Сладость: низкая
-  Аромат: цитрусовый, хвойный, хмелевой
-  Цвет: золотистый
-  Крепость: сильная
-  Страна: Великобритания
-\end{verbatim}
 
-\subsection{ER-диаграмма}
-Ниже на рисунке \ref{fig:beer-er} представлена диаграмма сущностей и связей в нотации Чена:~
+\section{Типовой сценарий взаимодействия}
+Пользователь выбирает один из пунктов меню:
+\begin{enumerate}
+    \item Показать характеристики пива
+    \item Рекомендовать пиво по вкусу
+    \item Найти пиво по стране происхождения
+    \item Найти пиво по крепости и цвету
+\end{enumerate}
+
+На рисунке \ref{fig:beer-usecase} предствалена Use-case диаграмма программы. 
+В листинге \ref{lst:out.py} представлен пример работы с программой.
+
 \newpage
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    actor/.style={draw, thick, fill=white, minimum width=1.5cm, minimum height=0.8cm},
+    usecase/.style={ellipse, draw, thick, minimum width=4.2cm, minimum height=1.2cm, align=center, fill=white},
+    line/.style={draw, thick},
+    font=\large
+]
+
+% Актор
+\node[actor] (user) at (-7,0) {Пользователь};
+
+% Use-cases
+\node[usecase] (show_all)      at (2.5, 3) {Просмотр всех сортов пива};
+\node[usecase] (by_taste)      at (2.5, 1) {Поиск по вкусу};
+\node[usecase] (by_strength)   at (2.5,-1) {Поиск по крепости};
+\node[usecase] (by_country)    at (2.5,-3) {Поиск по стране};
+\node[usecase] (details)       at (2.5,-5) {Просмотр характеристик сорта};
+
+% Линии связи
+\draw[line] (user) -- (show_all);
+\draw[line] (user) -- (by_taste);
+\draw[line] (user) -- (by_strength);
+\draw[line] (user) -- (by_country);
+\draw[line] (user) -- (details);
+
+\end{tikzpicture}
+\caption{Use-Case диаграмма системы}
+\label{fig:beer-usecase}
+\end{figure}
+
+
+
+\includelistingpretty
+    {out.py} % Имя файла с расширением (файл должен быть расположен в директории inc/lst/)
+    {} % Язык программирования (необязательный аргумент)
+    {Пример работы с консольной программой} % Подпись листинга
+
+
+\section{ER-диаграмма}
+Ниже на рисунке \ref{fig:beer-er} представлена диаграмма сущностей и связей в нотации Чена:
+% \newpage
 
 \begin{figure}[h!]
 \begin{center}
 \begin{tikzpicture}[
   entity/.style={rectangle, draw=black, thick, minimum width=4cm, minimum height=1.2cm, align=center, fill=white},
   relationship/.style={diamond, draw=black, thick, minimum width=2.4cm, minimum height=1.2cm, align=center, fill=white},
+  usecase/.style={ellipse, draw, thick, minimum width=4.2cm, minimum height=1.2cm, align=center, fill=white},
   >=Stealth,
   every edge/.style={draw,->,>=Stealth},
   font=\large
@@ -34,11 +81,11 @@
 \node[entity] (beer) at (-2,0) {Пиво};
 
 % Остальные сущности — увеличенные расстояния
-\node[entity] (taste)      at (-8,-5) {Вкус};
-\node[entity] (country)    at (5,-12)  {Страна};
+\node[usecase] (taste)      at (-8,-5) {Вкус};
+\node[usecase] (country)    at (5,-12)  {Страна};
 \node[entity] (preference) at (-8,-12) {Предпочтение};
-\node[entity] (color) at (-3,-5) {Цвет};
-\node[entity] (hardness) at (2,-5) {Крепость};
+\node[usecase] (color) at (-3,-5) {Цвет};
+\node[usecase] (hardness) at (2,-5) {Крепость};
 
 
 \node[relationship] (has)      at (-8,-2.5) {имеет};
@@ -64,64 +111,57 @@
 \draw (matches.north) -- ++(0,0.4) -| (hardness.south);
 
 
-
 \end{tikzpicture}
 \end{center}
-\caption{ER-диаграмма предметной области «Сорта пива»}
+\caption{ER-диаграмма предметной области}
 \label{fig:beer-er}
 \end{figure}
 
 
-\section{Типовой сценарий взаимодействия}
-Пользователь выбирает один из пунктов меню:
-\begin{enumerate}
-    \item Показать характеристики пива
-    \item Рекомендовать пиво по вкусу
-    \item Найти пиво по стране происхождения
-    \item Найти пиво по крепости и цвету
-\end{enumerate}
 
-Пример использования:
-\begin{verbatim}
-Выбор пункта меню: Рекомендовать пиво по вкусу
-Выбор горечи: средняя
-Выбор аромата: фруктовый
-Результат: Эль, Американский Эль
-\end{verbatim}
+% \begin{figure}[h!]
+% \centering
+% \begin{tikzpicture}[
+%   sibling distance=12em,
+%   % стиль для круглых узлов
+%   roundnode/.style={draw, circle, minimum size=1.2cm, align=center},
+%   % стиль для квадратных узлов
+%   squarenode/.style={draw, rectangle, minimum size=1.2cm, align=center}
+% ]
 
-\section{Пример работы программы}
-\begin{verbatim}
-=== Экспертная система: Вкусы пива ===
-1. Показать характеристики пива
-2. Рекомендовать пиво по вкусу
-3. Найти по стране происхождения
-4. Найти по крепости и цвету
-0. Выход
-Выберите действие: 2
+% \node[squarenode] {Пиво}  % корневой узел круглый
+%     child { node[squarenode] {Вкус}  % квадратный узел
+%       child { node[squarenode] {Горечь} }
+%       child { node[squarenode] {Сладость}}
+%       child { node[squarenode] {Аромат}}
+%     }
+%     child { node[squarenode] {Страна}  % квадратный узел
+%       child { node[roundnode] {Германия} }
+%       child { node[roundnode] {...} }
+%     }
+%     child { node[squarenode] {Цвет}  % квадратный узел
+%       child { node[roundnode] {D} }
+%       child { node[roundnode] {E} }
+%     }
+%     child { node[squarenode] {Крепость}  % квадратный узел
+%       child { node[roundnode] {D} }
+%       child { node[roundnode] {E} }
+%     };
 
-Выберите желаемую горечь:
-1. низкая
-2. средняя
-3. высокая
-Номер горечи: 2
+% \end{tikzpicture}
+% \caption{Use-Case диаграмма системы}
+% \label{fig:beer-usecase}
+% \end{figure}
 
-Выберите желаемый аромат:
-1. фруктовый
-2. цветочный
-3. шоколадный
-...
-Номер аромата: 1
 
-Рекомендуется: Эль, Американский Эль
-\end{verbatim}
 
-\section{Заключение}
+
+\chapter*{ЗАКЛЮЧЕНИЕ}
 В ходе лабораторной работы была разработана экспертная система по сортам пива с фреймовой базой знаний.  
 Система позволяет:
 \begin{itemize}
-    \item хранить информацию о более чем 20 сортах пива с различными характеристиками;
+    \item хранить информацию сортах пива с различными характеристиками;
     \item делать рекомендации по вкусовым предпочтениям, стране происхождения и крепости/цвету;
     \item демонстрировать атрибуты конкретного сорта пива пользователю.
 \end{itemize}
 
-Дальнейшее развитие системы может включать расширение базы знаний, подключение пользовательских отзывов, а также интеграцию с графическим интерфейсом.
