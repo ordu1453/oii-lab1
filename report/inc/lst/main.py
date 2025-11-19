@@ -1,4 +1,3 @@
-# beer_expert_system_menu.py
 from base import beer_knowledge_base
 
 def find_beer_by_name(name):
