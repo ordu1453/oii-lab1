@@ -54,7 +54,7 @@ def find_by_country():
         return
     country = countries[choice]
 
-    print(f"\n🔍 Пиво из страны: {country}")
+    print(f"\nПиво из страны: {country}")
     result = [name for name, data in beer_knowledge_base.items() 
               if name != "Пиво" and data["страна"] == country]
     if result:
@@ -79,7 +79,7 @@ def find_by_strength_and_color():
     c_choice = int(input("Номер цвета: ")) - 1
     color = colors[c_choice]
 
-    print(f"\n🔍 Пиво с крепостью '{strength}' и цветом '{color}'")
+    print(f"\nПиво с крепостью '{strength}' и цветом '{color}'")
     result = []
     for n, d in beer_knowledge_base.items():
         if n == "Пиво":
@@ -92,7 +92,7 @@ def find_by_strength_and_color():
         print("Нет пива с такими характеристиками.")
 def main():
     while True:
-        print("\n=== Экспертная система: Вкусы пива ===")
+        print("\n=== Вкусы пива ===")
         print("1. Показать характеристики пива")
         print("2. Рекомендовать пиво по вкусу")
         print("3. Найти по стране происхождения")
